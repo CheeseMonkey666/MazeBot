@@ -6,3 +6,5 @@ A blue pixel defines the end point of a maze, whereas a red pixel defines the st
 Mazes have to be saved in BMP format (for now) and have a maximum resolution of 300x450. An (extremely simple) sample map is included in the maps folder.
 
 To use, simply open the application, click on "Open Map", select a valid file from your computer and click on the "Walk" button. Recursive mode is a planned feature but has not yet been implemented.
+
+This is an Eclipse Luna project, so import the MazeBot folder (in Source) to access and muck around with the code. 

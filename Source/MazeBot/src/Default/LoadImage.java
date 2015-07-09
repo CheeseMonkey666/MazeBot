@@ -33,17 +33,11 @@ public class LoadImage implements ActionListener {
 		fileName = fd.getDirectory() + fd.getFile();
 		try {
 			img = ImageIO.read(new File(fileName));
-			if (img.getHeight() <= 450 && img.getWidth() <= 300){
+			if (img.getHeight() <= 900 && img.getWidth() <= 600){
+				Main.map = img;
 				Image image = (Image)img;
-				int h = img.getHeight(), w = img.getWidth(), i = 0;
-				do{
-					image = image.getScaledInstance(w*2, h*2, Image.SCALE_DEFAULT);
-					ImageIcon ico = new ImageIcon(image);
-					h = ico.getIconHeight();
-					w = ico.getIconWidth();
-					i++;
-				}while(h <= 300 && w <= 450);
-				Main.mapScale = (i + 1) * 2;
+				int h = img.getHeight(), w = img.getWidth(), scale = 600 / h;
+				image = img.getScaledInstance(w * scale, h * scale, Image.SCALE_DEFAULT);
 				Main.Canvas.setIcon(new ImageIcon(image));
 				Main.Canvas.setBorder(BorderFactory.createLineBorder(Color.black));
 			}

@@ -18,7 +18,7 @@ public class Main {
 	private static JButton walkB, recurB;
 	public static BufferedImage map = null;
 	public static JLabel Canvas;
-	public static int h, w, mapScale;
+	public static int h, w;
 	
 	public static void main(String[] args) {
 		 try {

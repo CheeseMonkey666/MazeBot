@@ -89,7 +89,7 @@ public class AI implements ActionListener {
 				map.setRGB(posX, posY, Color.green.getRGB());
 				if(map.getRGB(posX - speedX, posY - speedY) != Color.black.getRGB())
 					map.setRGB(posX - speedX, posY - speedY, front - new Color(5,5,5).getRGB());
-				Image scaled = map.getScaledInstance(map.getWidth() * Main.mapScale, map.getHeight() * Main.mapScale, Image.SCALE_DEFAULT);
+				Image scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);
 				Main.Canvas.setIcon(new ImageIcon(scaled));
 				if(map.getRGB(posX + speedX, posY + speedY) == Color.black.getRGB()){
 					if(speedX != 0){

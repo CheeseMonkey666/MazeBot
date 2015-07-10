@@ -50,6 +50,7 @@ public class LoadImage implements ActionListener {
 			img = null;
 		}
 		Main.map = img;
+		Main.overlay = img;
 		Main.checkMapBuffered();
 	}
 }

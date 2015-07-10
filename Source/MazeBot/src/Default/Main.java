@@ -11,14 +11,16 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.JCheckBox;
 
 public class Main {
 	
 	public static JFrame parentFrame;
 	private static JButton walkB, recurB;
-	public static BufferedImage map = null;
+	public static BufferedImage map = null, overlay = null;
 	public static JLabel Canvas;
 	public static int h, w;
+	public static JCheckBox trail;
 	
 	public static void main(String[] args) {
 		 try {
@@ -41,6 +43,7 @@ public class Main {
 		JPanel mainPanel = new JPanel (new BorderLayout()), buttonPanel = new JPanel (), canvasPanel = new JPanel();
 		JButton openMapButton = new JButton(), walkButton = new JButton(), recurButton = new JButton();
 		JLabel canvas = new JLabel();
+		JCheckBox displayTrail = new JCheckBox();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.setPreferredSize(new Dimension(1000,700));
@@ -50,11 +53,13 @@ public class Main {
 		openMapButton.setText("Open Map");
 		walkButton.setText("Walk");
 		recurButton.setText("Recursive");
+		displayTrail.setText("Trail");
 		walkButton.setEnabled(false);
 		recurButton.setEnabled(false);
 		buttonPanel.add(openMapButton);
 		buttonPanel.add(walkButton);
 		buttonPanel.add(recurButton);
+		buttonPanel.add(displayTrail);
 		canvasPanel.add(canvas);
 		mainPanel.add(canvasPanel, BorderLayout.CENTER);
 		mainPanel.add(buttonPanel, BorderLayout.NORTH);
@@ -66,6 +71,7 @@ public class Main {
 		recurB = recurButton;
 		parentFrame = frame;
 		Canvas = canvas;
+		trail = displayTrail;
 		openMapButton.addActionListener(new LoadImage());
 		walkButton.addActionListener(new AI());
 		walkButton.setActionCommand("walk");

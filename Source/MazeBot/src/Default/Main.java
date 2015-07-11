@@ -52,7 +52,7 @@ public class Main {
 		recurButton.setPreferredSize(new Dimension(100, 30));
 		openMapButton.setText("Open Map");
 		walkButton.setText("Walk");
-		recurButton.setText("Recursive");
+		recurButton.setText("Pathfinding");
 		displayTrail.setText("Trail");
 		walkButton.setEnabled(false);
 		recurButton.setEnabled(false);
@@ -87,7 +87,7 @@ public class Main {
 		}
 		else {
 			walkB.setEnabled(true);
-			//recurB.setEnabled(true);
+			recurB.setEnabled(true);
 			h = map.getHeight();
 			w = map.getWidth();
 		}

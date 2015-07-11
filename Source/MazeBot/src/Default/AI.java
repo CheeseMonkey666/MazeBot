@@ -17,6 +17,7 @@ public class AI implements ActionListener {
 	BufferedImage map, overlay;
 	String mode;
 	static runAI inst;
+	node activeNode;
 	
 	public AI(String command){
 		startCoords = new int[2];
@@ -29,7 +30,7 @@ public class AI implements ActionListener {
 		map = Main.map;
 		h = map.getHeight();
 		w = map.getWidth();
-		inst = new runAI();
+		inst = new runAI(command);
 		Boolean gotStart = false, gotEnd = false;
 		for (int x = 0; x < w; x++){
 			for (int y = 0; y < h; y++){
@@ -60,11 +61,12 @@ public class AI implements ActionListener {
 	private void Run(){
 		
 		if(mode == "walk"){					
-			JOptionPane.showMessageDialog(Main.parentFrame, "AI Initialized Successfully, Will Now Commence 'Walk' Type Mapping");		
+			JOptionPane.showMessageDialog(Main.parentFrame, "AI Initialized Successfully, Will Now Commence 'Stupid Human' Type Mapping");		
 			inst.execute();
 		}
 		else if(mode == "recur"){
-			JOptionPane.showMessageDialog(Main.parentFrame, "WIP, not ready!");
+			JOptionPane.showMessageDialog(Main.parentFrame, "AI Initialized Successfully, Will Now Commence 'A*' Type Mapping");
+			inst.execute();
 		}
 		else
 			JOptionPane.showMessageDialog(Main.parentFrame, "Something went wrong (AI mode not recognized)");
@@ -78,9 +80,15 @@ public class AI implements ActionListener {
 
 	class runAI extends SwingWorker<Void, Void>{
 	Boolean running;
+	String algorithm;
+	
+	public runAI(String type){
+		algorithm = type;
+	}
 	
 		@Override
 		protected Void doInBackground() throws Exception {
+			if(algorithm == "walk"){
 			int speedX = 1, speedY = 0, posX = startCoords[0], posY = startCoords[1];
 			int computeTrail[][] = new int[w][h], graphicTrail[][] = new int[w * h][2], trailCount = 0;;
 			for(int i = 0; i < w; i++)
@@ -96,15 +104,18 @@ public class AI implements ActionListener {
 			while(map.getRGB(posX, posY) != Color.blue.getRGB()){
 				
 				//Thread.sleep(100);
-				Image scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);;
 				map.setRGB(posX, posY, Color.green.getRGB());
+				Image scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);
 				computeTrail[posX][posY] += 1;
 				if(map.getRGB(posX - speedX, posY - speedY) != Color.black.getRGB()){
 					map.setRGB(posX - speedX,  posY - speedY,  Color.white.getRGB());
 					Boolean dupe = false;
 					for(int k = 0; k < trailCount; k++)
-						if(graphicTrail[k][0] == posX - speedX && graphicTrail[k][1] == posY - speedY)
+						if(graphicTrail[k][0] == posX - speedX && graphicTrail[k][1] == posY - speedY){
 							dupe = true;
+							//graphicTrail[k][0] = 0;
+							//graphicTrail[k][1] = 0;
+						}
 					if(computeTrail[posX - speedX][posY - speedY] > 0 && !dupe){
 						graphicTrail[trailCount][0] = posX - speedX;
 						graphicTrail[trailCount][1] = posY - speedY;
@@ -171,8 +182,128 @@ public class AI implements ActionListener {
 				posY += speedY;
 			}
 			JOptionPane.showMessageDialog(Main.parentFrame, "Success! Please reload the map if you would like to try again");
+			}
+			//####################################################################################
+			//####################################################################################
+			else{
+				node nodes[][] = new node[w][h], startNode = null, endNode = null, closeNodes[] = new node[4], nextNode = null;
+				for (int x = 0; x < w; x++)
+					for (int y = 0; y < h; y++){
+						if (startCoords[0] == x && startCoords[1] == y)
+							startNode = nodes[x][y] = new node(x, y);
+						else if (endCoords[0] == x && endCoords[1] == y)
+							endNode = nodes[x][y] = new node(x, y);
+						else if (map.getRGB(x, y) == Color.black.getRGB())
+							nodes[x][y] = new node(x, y, true);
+						else if (map.getRGB(x, y) == Color.white.getRGB())
+							nodes[x][y] = new node(x, y);
+					}
+				activeNode = startNode;
+				activeNode.G = 1;
+				while(activeNode != endNode){
+					map.setRGB(activeNode.x, activeNode.y, Color.yellow.getRGB());
+					Image scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);
+					Main.Canvas.setIcon(new ImageIcon(scaled));
+					if(!nodes[activeNode.x - 1][activeNode.y].closed && !nodes[activeNode.x - 1][activeNode.y].isIllegal)
+						closeNodes[0] = nodes[activeNode.x - 1][activeNode.y];
+					else
+						closeNodes[0] = null;
+					if(!nodes[activeNode.x][activeNode.y - 1].closed && !nodes[activeNode.x][activeNode.y - 1].isIllegal)
+						closeNodes[1] = nodes[activeNode.x][activeNode.y - 1];
+					else
+						closeNodes[1] = null;	
+					if(!nodes[activeNode.x + 1][activeNode.y].closed && !nodes[activeNode.x + 1][activeNode.y].isIllegal)
+						closeNodes[2] = nodes[activeNode.x + 1][activeNode.y];
+					else
+						closeNodes[2] = null;
+					if(!nodes[activeNode.x][activeNode.y + 1].closed && !nodes[activeNode.x][activeNode.y + 1].isIllegal)
+						closeNodes[3] = nodes[activeNode.x][activeNode.y + 1];
+					else
+						closeNodes[3] = null;
+					nextNode = null;
+					for (int j = 0; j < 4; j++)
+						if(closeNodes[j] != null){
+							nextNode = closeNodes[j];
+							//JOptionPane.showMessageDialog(Main.parentFrame, "NextNode pos: " + nextNode.x + " " + nextNode.y);
+						}
+					if(nextNode == null){
+						nextNode = new node(-1,-1);
+						nextNode.F = 10000;
+						//JOptionPane.showMessageDialog(Main.parentFrame, "NextNode pos: " + nextNode.x + " " + nextNode.y);
+					}
+					for (int i = 0; i < 4; i++)
+						if(closeNodes[i] != null){
+							if(activeNode == startNode){
+								closeNodes[i].G = activeNode.G + 1;
+								closeNodes[i].parent = activeNode;
+							}
+							else if(closeNodes[i].G > activeNode.G + 1 || !closeNodes[i].open){
+								closeNodes[i].G = activeNode.G + 1;
+								closeNodes[i].parent = activeNode;
+							}
+							closeNodes[i].open = true;
+							closeNodes[i].F = closeNodes[i].G + closeNodes[i].H;
+							if(closeNodes[i] == endNode)
+								activeNode = closeNodes[i];
+						}
+					activeNode.closed = true;
+					activeNode.open = false;
+					for (int x = 0; x < w; x++)
+						for (int y = 0; y < h; y++)
+							if(nodes[x][y].open){
+								if(nodes[x][y].F < nextNode.F)
+									nextNode = nodes[x][y];
+								map.setRGB(x, y, Color.green.getRGB());
+								scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);
+								Main.Canvas.setIcon(new ImageIcon(scaled));
+							}
+					
+					//JOptionPane.showMessageDialog(Main.parentFrame, "nextX: " + nextNode.x + " nextY: " + nextNode.y);
+					activeNode = nextNode;
+				}
+				while(activeNode != startNode){
+					activeNode = activeNode.parent;
+					map.setRGB(activeNode.x, activeNode.y, Color.red.getRGB());
+					Image scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);
+					Main.Canvas.setIcon(new ImageIcon(scaled));
+				}
+			}
 			return null;
 			
+		}
+		
+	}
+	
+	private class node{
+		public int x, y, G, H, F;
+		public node parent;
+		public Boolean closed, open, isIllegal;
+		
+		public node(int X, int Y){
+			x = X;
+			y = Y;
+			G = -1;
+			H = getH(x, y);
+			F = H + G;
+			parent = null;
+			closed = false;
+			open = false;
+			isIllegal = false;
+		}
+		public node(int X, int Y, Boolean illegal){
+			x = X;
+			y = Y;
+			G = 0;
+			H = getH(x, y);
+			parent = null;
+			closed = false;
+			open = false;
+			isIllegal = illegal;
+		}
+		
+		int getH(int xPos, int yPos){
+			int manhattan = Math.abs((xPos - endCoords[0]) + (yPos - endCoords[1]));
+			return manhattan;
 		}
 		
 	}

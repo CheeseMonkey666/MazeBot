@@ -36,13 +36,13 @@ public class LoadImage implements ActionListener {
 			if (img.getHeight() <= 900 && img.getWidth() <= 600){
 				Main.map = img;
 				Image image = (Image)img;
-				int h = img.getHeight(), w = img.getWidth(), scale = 600 / h;
+				int h = img.getHeight(), w = img.getWidth(), scale = Math.min(600 / h, 900 / w);
 				image = img.getScaledInstance(w * scale, h * scale, Image.SCALE_DEFAULT);
 				Main.Canvas.setIcon(new ImageIcon(image));
 				Main.Canvas.setBorder(BorderFactory.createLineBorder(Color.black));
 			}
 			else{
-				JOptionPane.showMessageDialog(Main.parentFrame, "Image too large (450x300 max)");
+				JOptionPane.showMessageDialog(Main.parentFrame, "Image too large (900x600 max)");
 				img = null;
 			}
 			} catch (IOException e1) {

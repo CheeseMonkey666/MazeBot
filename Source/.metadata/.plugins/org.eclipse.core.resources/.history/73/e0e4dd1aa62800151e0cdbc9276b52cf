@@ -1,0 +1,92 @@
+package Default;
+
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.util.Random;
+
+import javax.swing.*;
+
+public class MapGen implements ActionListener {
+
+	@Override
+	public void actionPerformed(ActionEvent a) {
+		JTextField mapWidthInput = new JTextField("11"), mapHeightInput = new JTextField("11");
+		JPanel optionPanel = new JPanel(new GridLayout(0,1));
+		int width = 0, height = 0, posX = 1, posY = 1;
+		cell currentCell;
+		String Width = "", Height = "";
+		optionPanel.add(new JLabel("Map Width: "));
+		optionPanel.add(mapWidthInput);
+		optionPanel.add(new JLabel("Map Height: "));
+		optionPanel.add(mapHeightInput);
+		int result = JOptionPane.showConfirmDialog(Main.parentFrame, optionPanel, "Map Options", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		if(result == JOptionPane.OK_OPTION){
+			Width = mapWidthInput.getText();
+			Height = mapHeightInput.getText();
+			try{
+				width = Integer.parseInt(Width);
+				height = Integer.parseInt(Height);
+			}catch(NumberFormatException err){
+				JOptionPane.showMessageDialog(null, "Is it that hard to just use numbers? \n" + err);
+				return;
+			}
+		}
+		if(width >= 900 && width <= 10 || height >= 600 || height <= 10 || width % 2 == 0 || height % 2 == 0){
+			JOptionPane.showMessageDialog(null, "Invalid Input(s). Width must be 11-899 and height must be 11-599. Only odd numbers.");
+			return;
+		}	
+		
+		BufferedImage map = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		int GX = 0, GY = 0;
+		cell cells[][] = new cell[width][height];
+		for(int x = 0; x < width; x++){
+			for(int y = 0; y < width; y++){
+				if(x % 2 == 0 || y % 2 == 0)
+					map.setRGB(x, y, Color.black.getRGB());
+				else
+					map.setRGB(x, y, Color.white.getRGB());
+				if(y % 2 == 1)
+					GY++;
+				cells[GX][GY] = new cell(x, y, GX, GY);
+			}
+			if(x % 2 == 1)
+				GX++;
+		}
+		currentCell = cells[0][0];
+		Random rand = new Random();
+		do{
+			int direction = -1, buff, triedDirections[] = {0,0,0,0};
+			Boolean backtrack = false;
+			while(!backtrack && direction < 0){
+				buff = rand.nextInt(4);
+				if(buff == 0 && !cells[currentCell.gridX - 1][currentCell.gridY].visited)
+					
+			}
+		}while(posX != 1 && posY != 1);
+		
+		Main.map = map;
+		Image image = (Image)map;
+		int h = map.getHeight(), w = map.getWidth(), scale = 600 / h;
+		image = map.getScaledInstance(w * scale, h * scale, Image.SCALE_DEFAULT);
+		Main.Canvas.setIcon(new ImageIcon(image));
+		Main.Canvas.setBorder(BorderFactory.createLineBorder(Color.black));
+		Main.checkMapBuffered();
+	}
+	
+	class cell{
+		int x, y, gridX, gridY;
+		Boolean visited;
+		
+		public cell(int X, int Y, int GX, int GY){
+			x = X;
+			y = Y;
+			gridX = GX;
+			gridY = GY;
+			visited = false;
+		}
+	}
+}

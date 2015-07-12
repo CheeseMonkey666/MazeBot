@@ -105,7 +105,6 @@ public class AI implements ActionListener {
 				
 				//Thread.sleep(100);
 				map.setRGB(posX, posY, Color.green.getRGB());
-				Image scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);
 				computeTrail[posX][posY] += 1;
 				if(map.getRGB(posX - speedX, posY - speedY) != Color.black.getRGB()){
 					map.setRGB(posX - speedX,  posY - speedY,  Color.white.getRGB());
@@ -137,7 +136,6 @@ public class AI implements ActionListener {
 					}
 				}
 				
-				Main.Canvas.setIcon(new ImageIcon(scaled));
 				if(map.getRGB(posX + speedX, posY + speedY) == Color.black.getRGB()){
 					if(speedX != 0){
 						if(map.getRGB(posX, posY + 1) != Color.black.getRGB()){
@@ -180,6 +178,8 @@ public class AI implements ActionListener {
 				
 				posX += speedX;
 				posY += speedY;
+				Image scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);
+				Main.Canvas.setIcon(new ImageIcon(scaled));
 			}
 			JOptionPane.showMessageDialog(Main.parentFrame, "Success! Please reload the map if you would like to try again");
 			}
@@ -202,8 +202,6 @@ public class AI implements ActionListener {
 				activeNode.G = 1;
 				while(activeNode != endNode){
 					map.setRGB(activeNode.x, activeNode.y, Color.yellow.getRGB());
-					Image scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);
-					Main.Canvas.setIcon(new ImageIcon(scaled));
 					if(!nodes[activeNode.x - 1][activeNode.y].closed && !nodes[activeNode.x - 1][activeNode.y].isIllegal)
 						closeNodes[0] = nodes[activeNode.x - 1][activeNode.y];
 					else
@@ -228,7 +226,7 @@ public class AI implements ActionListener {
 						}
 					if(nextNode == null){
 						nextNode = new node(-1,-1);
-						nextNode.F = 10000;
+						nextNode.F = 30000;
 						//JOptionPane.showMessageDialog(Main.parentFrame, "NextNode pos: " + nextNode.x + " " + nextNode.y);
 					}
 					for (int i = 0; i < 4; i++)
@@ -244,21 +242,22 @@ public class AI implements ActionListener {
 							closeNodes[i].open = true;
 							closeNodes[i].F = closeNodes[i].G + closeNodes[i].H;
 							if(closeNodes[i] == endNode)
-								activeNode = closeNodes[i];
+								nextNode = endNode;
 						}
 					activeNode.closed = true;
 					activeNode.open = false;
-					for (int x = 0; x < w; x++)
-						for (int y = 0; y < h; y++)
-							if(nodes[x][y].open){
-								if(nodes[x][y].F < nextNode.F)
-									nextNode = nodes[x][y];
-								map.setRGB(x, y, Color.green.getRGB());
-								scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);
-								Main.Canvas.setIcon(new ImageIcon(scaled));
-							}
+					if(nextNode != endNode)
+						for (int x = 0; x < w; x++)
+							for (int y = 0; y < h; y++)
+								if(nodes[x][y].open){
+									if(nodes[x][y].F < nextNode.F)
+										nextNode = nodes[x][y];
+									map.setRGB(x, y, Color.green.getRGB());
+								}
 					
 					//JOptionPane.showMessageDialog(Main.parentFrame, "nextX: " + nextNode.x + " nextY: " + nextNode.y);
+					Image scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);
+					Main.Canvas.setIcon(new ImageIcon(scaled));
 					activeNode = nextNode;
 				}
 				while(activeNode != startNode){
@@ -295,6 +294,7 @@ public class AI implements ActionListener {
 			y = Y;
 			G = 0;
 			H = getH(x, y);
+			F = H + G;
 			parent = null;
 			closed = false;
 			open = false;
@@ -302,7 +302,7 @@ public class AI implements ActionListener {
 		}
 		
 		int getH(int xPos, int yPos){
-			int manhattan = Math.abs((xPos - endCoords[0]) + (yPos - endCoords[1]));
+			int manhattan = Math.abs(xPos - endCoords[0]) + Math.abs(yPos - endCoords[1]);
 			return manhattan;
 		}
 		

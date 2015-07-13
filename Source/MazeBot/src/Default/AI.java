@@ -256,16 +256,22 @@ public class AI implements ActionListener {
 								}
 					
 					//JOptionPane.showMessageDialog(Main.parentFrame, "nextX: " + nextNode.x + " nextY: " + nextNode.y);
-					Image scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);
-					Main.Canvas.setIcon(new ImageIcon(scaled));
+					if(Main.trail.isSelected()){
+						Image scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);
+						Main.Canvas.setIcon(new ImageIcon(scaled));
+					}
 					activeNode = nextNode;
 				}
 				while(activeNode != startNode){
 					activeNode = activeNode.parent;
 					map.setRGB(activeNode.x, activeNode.y, Color.red.getRGB());
-					Image scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);
-					Main.Canvas.setIcon(new ImageIcon(scaled));
+					if(Main.trail.isSelected()){
+						Image scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);
+						Main.Canvas.setIcon(new ImageIcon(scaled));
+					}
 				}
+				Image scaled = map.getScaledInstance(map.getWidth() * (Main.Canvas.getIcon().getIconWidth() / Main.w), map.getHeight() * (Main.Canvas.getIcon().getIconHeight() / Main.h), Image.SCALE_DEFAULT);
+				Main.Canvas.setIcon(new ImageIcon(scaled));
 			}
 			return null;
 			

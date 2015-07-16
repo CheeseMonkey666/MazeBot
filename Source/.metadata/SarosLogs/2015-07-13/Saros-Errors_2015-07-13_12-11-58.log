@@ -1,0 +1,38 @@
+WARN  2015-07-13 12:11:48,064 (NullSarosSession.java:64) unexpected method call
+WARN  2015-07-13 12:11:48,070 (NullSarosSession.java:64) unexpected method call
+WARN  2015-07-13 12:11:53,972 (NullSarosSession.java:64) unexpected method call
+WARN  2015-07-13 12:11:53,978 (NullSarosSession.java:64) unexpected method call
+WARN  2015-07-13 12:12:06,432 (StunServiceImpl.java:420) received no response from STUN server stunserver.org/69.172.201.208:3478 at local address /192.168.2.8:0
+WARN  2015-07-13 12:12:13,985 (StunServiceImpl.java:420) received no response from STUN server stunserver.org/69.172.201.208:3478 at local address /192.168.2.8:0
+WARN  2015-07-13 12:12:50,768 (NullSarosSession.java:64) unexpected method call
+WARN  2015-07-13 12:12:50,771 (NullSarosSession.java:64) unexpected method call
+ERROR 2015-07-13 12:12:50,979 (SarosNet.java:392) internal error in listener: de.fu_berlin.inf.dpp.communication.chat.single.SingleUserChatService$1@16a43e3
+java.lang.NullPointerException
+	at de.fu_berlin.inf.dpp.ui.util.SWTUtils.runSafeSWTAsync(SWTUtils.java:144)
+	at de.fu_berlin.inf.dpp.ui.widgets.chat.ChatControl$5.disconnected(ChatControl.java:278)
+	at de.fu_berlin.inf.dpp.communication.chat.AbstractChat.notifyJIDDisconnected(AbstractChat.java:72)
+	at de.fu_berlin.inf.dpp.communication.chat.single.SingleUserChat.setConnected(SingleUserChat.java:129)
+	at de.fu_berlin.inf.dpp.communication.chat.single.SingleUserChatService$1.connectionStateChanged(SingleUserChatService.java:60)
+	at de.fu_berlin.inf.dpp.net.SarosNet.setConnectionState(SarosNet.java:390)
+	at de.fu_berlin.inf.dpp.net.SarosNet.disconnect(SarosNet.java:289)
+	at de.fu_berlin.inf.dpp.Saros$1.run(Saros.java:334)
+	at de.fu_berlin.inf.dpp.util.Utils$2.run(Utils.java:175)
+	at java.lang.Thread.run(Unknown Source)
+WARN  2015-07-13 12:12:51,019 (SWTUtils.java:144) could not execute runnable de.fu_berlin.inf.dpp.ui.widgets.ConnectionStateComposite$1$1@12761d7, UI thread is not available
+StackTrace:
+	at de.fu_berlin.inf.dpp.ui.util.SWTUtils.runSafeSWTAsync(SWTUtils.java:145)
+	at de.fu_berlin.inf.dpp.ui.widgets.ConnectionStateComposite$1.connectionStateChanged(ConnectionStateComposite.java:55)
+	at de.fu_berlin.inf.dpp.net.SarosNet.setConnectionState(SarosNet.java:390)
+	at de.fu_berlin.inf.dpp.net.SarosNet.disconnect(SarosNet.java:289)
+	at de.fu_berlin.inf.dpp.Saros$1.run(Saros.java:334)
+	at de.fu_berlin.inf.dpp.util.Utils$2.run(Utils.java:175)
+	at java.lang.Thread.run(Unknown Source)
+WARN  2015-07-13 12:12:51,175 (SWTUtils.java:144) could not execute runnable de.fu_berlin.inf.dpp.ui.widgets.ConnectionStateComposite$1$1@a0a57, UI thread is not available
+StackTrace:
+	at de.fu_berlin.inf.dpp.ui.util.SWTUtils.runSafeSWTAsync(SWTUtils.java:145)
+	at de.fu_berlin.inf.dpp.ui.widgets.ConnectionStateComposite$1.connectionStateChanged(ConnectionStateComposite.java:55)
+	at de.fu_berlin.inf.dpp.net.SarosNet.setConnectionState(SarosNet.java:390)
+	at de.fu_berlin.inf.dpp.net.SarosNet.disconnect(SarosNet.java:293)
+	at de.fu_berlin.inf.dpp.Saros$1.run(Saros.java:334)
+	at de.fu_berlin.inf.dpp.util.Utils$2.run(Utils.java:175)
+	at java.lang.Thread.run(Unknown Source)

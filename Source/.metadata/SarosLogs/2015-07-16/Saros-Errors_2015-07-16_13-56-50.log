@@ -1,0 +1,7 @@
+WARN  2015-07-16 13:56:25,834 (NullSarosSession.java:64) unexpected method call
+WARN  2015-07-16 13:56:25,858 (NullSarosSession.java:64) unexpected method call
+WARN  2015-07-16 13:56:40,670 (NullSarosSession.java:64) unexpected method call
+WARN  2015-07-16 13:56:40,702 (NullSarosSession.java:64) unexpected method call
+WARN  2015-07-16 13:56:57,277 (StunServiceImpl.java:420) received no response from STUN server stunserver.org/69.172.201.208:3478 at local address /192.168.2.8:0
+WARN  2015-07-16 16:20:04,119 (NullSarosSession.java:64) unexpected method call
+WARN  2015-07-16 16:20:04,124 (NullSarosSession.java:64) unexpected method call

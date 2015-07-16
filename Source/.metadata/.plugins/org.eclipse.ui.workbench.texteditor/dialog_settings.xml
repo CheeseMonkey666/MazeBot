@@ -2,12 +2,13 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="scale" key="selection"/>
+		<item value="F" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="F"/>
 			<item value="scale"/>
 			<item value="Canvas"/>
 			<item value="map"/>
@@ -15,7 +16,6 @@
 			<item value="GX"/>
 			<item value="graphic"/>
 			<item value="scaled"/>
-			<item value="trailPos"/>
 		</list>
 		<list key="replacehistory">
 			<item value="computeTrail"/>
